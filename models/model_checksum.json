@@ -1,0 +1,22 @@
+{
+  "model_file": "soil_fertility_pipeline.pkl",
+  "sha256": "64045a8d1987fa530338d610737aaada25967697b2fd7592813e3444a80c917c",
+  "algorithm": "K-Nearest Neighbors",
+  "features": [
+    "N",
+    "P",
+    "K",
+    "pH",
+    "EC",
+    "Moisture",
+    "Temperature",
+    "Humidity"
+  ],
+  "classes": [
+    "High",
+    "Low",
+    "Medium"
+  ],
+  "generated_at": "2026-10-14T20:04:57.299324",
+  "test_f1_macro": 1.0
+}

@@ -88,7 +88,7 @@ def build_candidate_pipelines() -> dict:
 def train_and_evaluate_all():
     """Train candidates, compare cross-validated metrics, save the champion model with SHA-256 checksum."""
     print("=" * 60)
-    print("🌿 Soil-Sense ML Pipeline Training & Verification Engine")
+    print("[SOIL-SENSE] ML Pipeline Training & Verification Engine")
     print("=" * 60)
 
     X_train, X_test, y_train, y_test = get_train_test_split()
@@ -134,10 +134,10 @@ def train_and_evaluate_all():
         }
 
         print(
-            f"   ➔ CV Macro F1: {results[name]['cv_f1_macro_mean']:.4f} (±{results[name]['cv_f1_macro_std']:.4f})"
+            f"   -> CV Macro F1: {results[name]['cv_f1_macro_mean']:.4f} (+/- {results[name]['cv_f1_macro_std']:.4f})"
         )
         print(
-            f"   ➔ Test Accuracy: {test_acc:.4f} | Test Macro F1: {test_f1:.4f}"
+            f"   -> Test Accuracy: {test_acc:.4f} | Test Macro F1: {test_f1:.4f}"
         )
 
         if test_f1 > best_f1:
@@ -146,7 +146,7 @@ def train_and_evaluate_all():
             champion_pipeline = pipe
 
     print("\n" + "=" * 60)
-    print(f"🏆 Champion Model Selected: {best_name} (Macro F1 = {best_f1:.4f})")
+    print(f"[CHAMPION] Model Selected: {best_name} (Macro F1 = {best_f1:.4f})")
     print("=" * 60)
 
     # Save metrics report

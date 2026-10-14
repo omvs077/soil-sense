@@ -21,7 +21,7 @@ from src.predict import SoilPredictor
 def run_evaluation_suite():
     """Run thorough evaluation of the champion pipeline on held-out test data."""
     print("=" * 60)
-    print("📊 Soil-Sense Model Evaluation Suite")
+    print("[EVALUATION] Soil-Sense Model Evaluation Suite")
     print("=" * 60)
 
     # 1. Initialize verified predictor
@@ -40,8 +40,8 @@ def run_evaluation_suite():
     f1_macro = f1_score(y_test, y_pred, average="macro")
     clf_rep = classification_report(y_test, y_pred, output_dict=True)
 
-    print(f"➔ Test Accuracy:   {acc:.4f} ({acc * 100:.2f}%)")
-    print(f"➔ Macro F1-Score:  {f1_macro:.4f}")
+    print(f"   -> Test Accuracy:   {acc:.4f} ({acc * 100:.2f}%)")
+    print(f"   -> Macro F1-Score:  {f1_macro:.4f}")
 
     os.makedirs(FIGURES_DIR, exist_ok=True)
 
