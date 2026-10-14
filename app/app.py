@@ -103,10 +103,10 @@ def main():
         )
 
         preset_short_names = {
-            "Rich Alluvial Loam (High Fertility)": "🌾 Alluvial Loam (High)",
-            "Standard Black Cotton Soil (Medium Fertility)": "🌋 Black Cotton (Med)",
-            "Degraded / Acidic Sandy Soil (Low Fertility)": "🏜️ Acidic Sand (Low)",
-            "Saline / Sodic Alkaline Soil (Low Fertility)": "🧂 Saline Sodic (Low)",
+            "Rich Alluvial Loam (High Fertility)": "🌾 Alluvial",
+            "Standard Black Cotton Soil (Medium Fertility)": "🌋 Black Cotton",
+            "Degraded / Acidic Sandy Soil (Low Fertility)": "🏜️ Acidic Sand",
+            "Saline / Sodic Alkaline Soil (Low Fertility)": "🧂 Saline Sodic",
         }
 
         preset_cols = st.columns(len(SOIL_PRESETS))
