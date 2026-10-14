@@ -1,24 +1,25 @@
-"""Streamlit Community Cloud Entrypoint for Soil-Sense.
-
-Allows 1-click cloud deployment without specifying custom nested paths.
-"""
+"""Streamlit Community Cloud Entrypoint for Soil-Sense."""
 
 import sys
 from pathlib import Path
+import streamlit as st
 
-# Ensure project root and app directory are on sys.path
-PROJECT_ROOT = Path(__file__).resolve().parent
-APP_DIR = PROJECT_ROOT / "app"
-
-for p in [str(PROJECT_ROOT), str(APP_DIR)]:
-    if p not in sys.path:
-        sys.path.insert(0, p)
-
+# Configure wide layout as first command in the main script on EVERY run/refresh
 try:
-    from app.app import main
-except (ImportError, KeyError):
-    import app
-    main = app.main
+    st.set_page_config(
+        page_title="Soil-Sense | Precision Soil Fertility ML",
+        page_icon="🌱",
+        layout="wide",
+        initial_sidebar_state="collapsed",
+    )
+except Exception:
+    pass
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from app.dashboard import main
 
 if __name__ == "__main__":
     main()
