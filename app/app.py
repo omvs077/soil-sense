@@ -3,10 +3,13 @@
 import sys
 from pathlib import Path
 
-# Ensure project root is on sys.path so 'src' and 'app' can be resolved regardless of execution context
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+# Ensure project root and app directory are on sys.path
+APP_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = APP_DIR.parent
+
+for p in [str(PROJECT_ROOT), str(APP_DIR)]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
 
 import os
 import io
@@ -23,24 +26,18 @@ from src.config import (
 from src.validator import SoilSampleInput, validate_batch_dataframe
 from src.predict import SoilPredictor, SecurityError
 
+# Import ui_components directly from app dir first, catching any KeyError or ImportError
 try:
-    from app.ui_components import (
-        render_header,
-        render_fertility_badge,
-        render_probability_bars,
-        render_parameter_matrix,
-        render_agronomic_advisory,
-        render_disclaimer,
-    )
-except ImportError:
-    from ui_components import (
-        render_header,
-        render_fertility_badge,
-        render_probability_bars,
-        render_parameter_matrix,
-        render_agronomic_advisory,
-        render_disclaimer,
-    )
+    import ui_components as ui
+except (ImportError, KeyError):
+    from app import ui_components as ui
+
+render_header = ui.render_header
+render_fertility_badge = ui.render_fertility_badge
+render_probability_bars = ui.render_probability_bars
+render_parameter_matrix = ui.render_parameter_matrix
+render_agronomic_advisory = ui.render_agronomic_advisory
+render_disclaimer = ui.render_disclaimer
 
 # Page configuration - set wide mode
 st.set_page_config(

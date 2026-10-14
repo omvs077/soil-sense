@@ -6,12 +6,19 @@ Allows 1-click cloud deployment without specifying custom nested paths.
 import sys
 from pathlib import Path
 
-# Ensure project root is at head of sys.path
+# Ensure project root and app directory are on sys.path
 PROJECT_ROOT = Path(__file__).resolve().parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+APP_DIR = PROJECT_ROOT / "app"
 
-from app.app import main
+for p in [str(PROJECT_ROOT), str(APP_DIR)]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+try:
+    from app.app import main
+except (ImportError, KeyError):
+    import app
+    main = app.main
 
 if __name__ == "__main__":
     main()
