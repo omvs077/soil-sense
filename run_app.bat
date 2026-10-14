@@ -19,5 +19,5 @@ IF NOT EXIST ".venv\Scripts\activate.bat" (
 call .venv\Scripts\activate.bat
 
 echo Starting Streamlit on http://localhost:8501 ...
-streamlit run app/app.py
+streamlit run streamlit_app.py
 pause
