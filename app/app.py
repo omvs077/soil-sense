@@ -1,5 +1,13 @@
 """Soil-Sense - Precision Machine Learning Soil Fertility Diagnostic Platform."""
 
+import sys
+from pathlib import Path
+
+# Ensure project root is on sys.path so 'src' and 'app' can be resolved regardless of execution context
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import os
 import io
 import pandas as pd
@@ -14,14 +22,25 @@ from src.config import (
 )
 from src.validator import SoilSampleInput, validate_batch_dataframe
 from src.predict import SoilPredictor, SecurityError
-from app.ui_components import (
-    render_header,
-    render_fertility_badge,
-    render_probability_bars,
-    render_parameter_matrix,
-    render_agronomic_advisory,
-    render_disclaimer,
-)
+
+try:
+    from app.ui_components import (
+        render_header,
+        render_fertility_badge,
+        render_probability_bars,
+        render_parameter_matrix,
+        render_agronomic_advisory,
+        render_disclaimer,
+    )
+except ImportError:
+    from ui_components import (
+        render_header,
+        render_fertility_badge,
+        render_probability_bars,
+        render_parameter_matrix,
+        render_agronomic_advisory,
+        render_disclaimer,
+    )
 
 # Page configuration
 st.set_page_config(

@@ -7,6 +7,7 @@ echo ========================================================
 REM Redirect pip and temp caches to D: to protect C: drive
 set TEMP=D:\temp
 set TMP=D:\temp
+set PYTHONPATH=%~dp0;%PYTHONPATH%
 
 IF NOT EXIST ".venv\Scripts\activate.bat" (
     echo [ERROR] Virtual environment not found in .venv.
