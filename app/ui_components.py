@@ -23,7 +23,7 @@ def render_header():
                     <span>🌱</span> Soil-Sense
                     <span class="brand-badge">ML CLASSIFIER v1.0</span>
                 </div>
-                <div style="color: #94a3b8; font-size: 0.88rem; margin-top: 0.3rem;">
+                <div style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.25rem;">
                     Precision Agronomic Soil Fertility Diagnostics & Actionable Soil Health Intelligence
                 </div>
             </div>
@@ -40,21 +40,15 @@ def render_header():
 def render_fertility_badge(fertility_class: str, confidence: float):
     """Render high-impact fertility status card."""
     cls_lower = fertility_class.lower()
-    class_icons = {
-        "high": "🟢 OPTIMAL / HIGH FERTILITY",
-        "medium": "🟡 MODERATE / BALANCED FERTILITY",
-        "low": "🔴 LOW / DEGRADED FERTILITY",
-    }
     banner_class = f"result-banner result-banner-{cls_lower}"
-    title_text = class_icons.get(cls_lower, fertility_class.upper())
 
     st.markdown(
         f"""
         <div class="{banner_class}">
             <div class="result-label">Diagnostic Status</div>
-            <div class="result-value">{fertility_class.upper()}</div>
+            <div class="result-value">{fertility_class.upper()} FERTILITY</div>
             <div>
-                <span class="confidence-pill">Confidence: {confidence * 100:.1f}%</span>
+                <span class="confidence-pill">Classification Confidence: {confidence * 100:.1f}%</span>
             </div>
         </div>
         """,
@@ -64,7 +58,7 @@ def render_fertility_badge(fertility_class: str, confidence: float):
 
 def render_probability_bars(probabilities: Dict[str, float]):
     """Render modern stacked probability bars."""
-    st.markdown('<div class="card-title"><span>📊</span> Class Probability Distribution</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-header-bar"><span>📊</span> Class Probability Distribution</div>', unsafe_allow_html=True)
     for cls in ["High", "Medium", "Low"]:
         prob = probabilities.get(cls, 0.0)
         pct = round(prob * 100, 1)
@@ -74,7 +68,7 @@ def render_probability_bars(probabilities: Dict[str, float]):
             <div class="prob-row">
                 <div class="prob-header">
                     <span>{cls} Fertility</span>
-                    <span style="font-family: 'JetBrains Mono', monospace;">{pct}%</span>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">{pct}%</span>
                 </div>
                 <div class="prob-track">
                     <div class="prob-fill fill-{cls_lower}" style="width: {pct}%;"></div>
@@ -86,14 +80,13 @@ def render_probability_bars(probabilities: Dict[str, float]):
 
 
 def render_parameter_matrix(input_values: Dict[str, float]):
-    """Render parameter health matrix showing each parameter vs its optimal ICAR/FAO band."""
-    st.markdown('<div class="card-title"><span>🎯</span> Agronomic Parameter Health Matrix</div>', unsafe_allow_html=True)
+    """Render responsive CSS grid showing all 8 soil parameters vs their optimal ICAR/FAO bands."""
+    st.markdown('<div class="card-header-bar"><span>🎯</span> Agronomic Parameter Health Matrix</div>', unsafe_allow_html=True)
 
-    cols = st.columns(4)
     features_order = ["N", "P", "K", "pH", "EC", "Moisture", "Temperature", "Humidity"]
+    items_html = []
 
-    for idx, feat in enumerate(features_order):
-        col = cols[idx % 4]
+    for feat in features_order:
         val = input_values[feat]
         unit = FEATURE_BOUNDS[feat]["unit"]
         opt_min, opt_max = OPTIMAL_AGRONOMIC_RANGES[feat]
@@ -101,34 +94,37 @@ def render_parameter_matrix(input_values: Dict[str, float]):
         if val < opt_min:
             status = "Low"
             status_color = "#ef4444"
-            bg_color = "rgba(239, 68, 68, 0.15)"
+            bg_color = "rgba(239, 68, 68, 0.18)"
         elif val > opt_max:
             status = "High"
             status_color = "#f59e0b"
-            bg_color = "rgba(245, 158, 11, 0.15)"
+            bg_color = "rgba(245, 158, 11, 0.18)"
         else:
             status = "Optimal"
             status_color = "#10b981"
-            bg_color = "rgba(16, 185, 129, 0.15)"
+            bg_color = "rgba(16, 185, 129, 0.18)"
 
-        with col:
-            st.markdown(
-                f"""
-                <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 10px; padding: 0.75rem; margin-bottom: 0.6rem;">
-                    <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">{feat} ({unit})</div>
-                    <div style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin: 0.2rem 0;">{val:.1f}</div>
-                    <div style="display: inline-block; font-size: 0.7rem; font-weight: 600; padding: 0.1rem 0.45rem; border-radius: 4px; color: {status_color}; background: {bg_color};">
-                        {status} • Ref: {opt_min}-{opt_max}
-                    </div>
+        formatted_val = f"{val:.1f}" if feat != "pH" else f"{val:.2f}"
+
+        items_html.append(
+            f"""
+            <div class="param-card">
+                <div class="param-name">{feat} ({unit})</div>
+                <div class="param-val">{formatted_val}</div>
+                <div class="param-badge" style="color: {status_color}; background: {bg_color}; border: 1px solid {status_color}40;">
+                    {status} &bull; {opt_min}-{opt_max}
                 </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            </div>
+            """
+        )
+
+    grid_container = f'<div class="param-grid">{"".join(items_html)}</div>'
+    st.markdown(grid_container, unsafe_allow_html=True)
 
 
 def render_agronomic_advisory(diagnostics: List[Dict[str, str]]):
     """Render actionable agronomic treatment recommendations."""
-    st.markdown('<div class="card-title"><span>🌾</span> Actionable Agronomic Guidance</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-header-bar"><span>🌾</span> Actionable Agronomic Guidance</div>', unsafe_allow_html=True)
 
     for item in diagnostics:
         sev = item.get("severity", "medium")
@@ -142,9 +138,9 @@ def render_agronomic_advisory(diagnostics: List[Dict[str, str]]):
                     <span>{item['parameter']}</span>
                     <span class="{tag_class}">{item['status']}</span>
                 </div>
-                <div style="color: #cbd5e1; margin-bottom: 0.3rem;">{item['observation']}</div>
+                <div style="color: #cbd5e1; margin-bottom: 0.25rem;">{item['observation']}</div>
                 <div style="color: #94a3b8; font-size: 0.82rem;">
-                    <strong style="color: #38bdf8;">Prescription:</strong> {item['recommendation']}
+                    <strong style="color: #38bdf8;">Correction:</strong> {item['recommendation']}
                 </div>
             </div>
             """,
