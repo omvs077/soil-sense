@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soil-Sense | Academic Presentation Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070c16;
+      --bg-card: #0f172a;
+      --bg-card-hover: #1e293b;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --primary-emerald: #10b981;
+      --primary-light: #34d399;
+      --accent-cyan: #38bdf8;
+      --warning-amber: #f59e0b;
+      --danger-coral: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      overflow-x: hidden;
+    }
+
+    /* Deck Container */
+    .deck-wrapper {
+      width: 100%;
+      max-width: 1200px;
+      aspect-ratio: 16 / 9;
+      background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.08), transparent 40%),
+                  radial-gradient(circle at bottom left, rgba(56, 189, 248, 0.05), transparent 40%),
+                  #0c1322;
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 3rem 3.5rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Slide Content */
+    .slide {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      animation: fadeIn 0.3s ease-in-out forwards;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .slide-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--primary-light);
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.8rem;
+    }
+
+    .slide-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 1.8rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+      flex: 1;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      flex: 1;
+    }
+
+    .card {
+      background: rgba(17, 26, 46, 0.75);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.5rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(8px);
+    }
+
+    .card-highlight {
+      border-color: rgba(16, 185, 129, 0.35);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(17, 26, 46, 0.8) 100%);
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .card li {
+      font-size: 0.94rem;
+      line-height: 1.5;
+      color: #cbd5e1;
+      position: relative;
+      padding-left: 1.4rem;
+    }
+
+    .card li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--primary-light);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    .card strong {
+      color: #ffffff;
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    th, td {
+      padding: 0.65rem 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    th {
+      color: var(--accent-cyan);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* Controls Bar */
+    .controls {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .btn {
+      background: #1e293b;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.6rem 1.4rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--primary-emerald);
+      color: #060a12;
+      border-color: var(--primary-emerald);
+    }
+
+    .slide-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .progress-bar-container {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 9999px;
+      overflow: hidden;
+      max-width: 300px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 12.5%;
+      background: var(--primary-emerald);
+      transition: width 0.3s ease;
+    }
+
+    @media print {
+      body { background: #000; padding: 0; }
+      .controls { display: none !important; }
+      .deck-wrapper {
+        aspect-ratio: auto;
+        border: none;
+        box-shadow: none;
+        width: 100%;
+        max-width: 100%;
+        padding: 2rem;
+        page-break-after: always;
+      }
+      .slide { display: flex !important; margin-bottom: 4rem; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-wrapper">
+
+    <!-- SLIDE 1 -->
+    <div class="slide active" id="slide-1">
+      <div class="slide-badge">🌱 Academic Capstone &bull; Machine Learning</div>
+      <h1 class="slide-title" style="font-size: 3rem; margin-top: 1rem; margin-bottom: 1rem;">
+        Soil-Sense
+      </h1>
+      <div style="font-size: 1.45rem; color: var(--accent-cyan); font-weight: 600; margin-bottom: 1.5rem;">
+        Precision Agronomic Soil Fertility Classification Engine
+      </div>
+      <p style="font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; max-width: 850px; margin-bottom: 2.5rem;">
+        A security-hardened, explainable multiclass Machine Learning system classifying soil fertility status 
+        (<strong>Low</strong>, <strong>Medium</strong>, <strong>High</strong>) based on chemical, physical, and environmental parameters, 
+        running with zero C: drive storage bloat.
+      </p>
+      <div style="margin-top: auto; display: flex; gap: 2.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #64748b;">
+        <span>STACK: Scikit-learn &bull; Pandas &bull; Pydantic &bull; Streamlit</span>
+        <span>SECURITY: CWE-502 SHA-256 Verified</span>
+        <span>STATUS: Live on Streamlit Cloud</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide" id="slide-2">
+      <div class="slide-badge">01 &bull; Problem Statement</div>
+      <h2 class="slide-title">The Challenge of Modern Soil Diagnostics</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>⚠️ Laboratory Bottlenecks</h3>
+          <ul>
+            <li><strong>High Turnaround Latency:</strong> Traditional wet-chemistry soil assays take 2 to 4 weeks for laboratory results.</li>
+            <li><strong>Multidimensional Complexity:</strong> Interpreting 8+ interacting parameters (NPK, pH, EC, moisture) requires agronomic specialists.</li>
+            <li><strong>Blind Chemical Over-fertilization:</strong> Incorrect fertilizing exacerbates soil acidification, groundwater leaching, and crop lodging.</li>
+          </ul>
+        </div>
+        <div class="card card-highlight">
+          <h3>💡 The Soil-Sense Solution</h3>
+          <ul>
+            <li><strong>Instant Supervised Inference:</strong> Real-time multiclass classification (Low / Medium / High) in under 50 milliseconds.</li>
+            <li><strong>Prescriptive Actionable Advisories:</strong> Diagnostic heuristics mapping deficits to ICAR/FAO soil amendment treatments.</li>
+            <li><strong>Zero Cloud Dependency:</strong> Fully sandboxed local execution on D: drive or serverless cloud deployment.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide" id="slide-3">
+      <div class="slide-badge">02 &bull; Engineering Architecture</div>
+      <h2 class="slide-title">System Architecture & Zero C: Drive Bloat</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>1. Core Stack</h3>
+          <ul>
+            <li><strong>Runtime:</strong> Python 3.12 / 3.14</li>
+            <li><strong>ML Engine:</strong> Scikit-learn (Pipelines, Scalers, Imputers)</li>
+            <li><strong>Data Engine:</strong> Pandas & NumPy</li>
+            <li><strong>Validation:</strong> Pydantic v2 schemas</li>
+            <li><strong>Frontend:</strong> Streamlit + CSS Grid</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>2. Zero Data Leakage</h3>
+          <ul>
+            <li><strong>Strict Encapsulation:</strong> Transformers bound in <code>Pipeline</code>.</li>
+            <li><strong>Independent Fitting:</strong> Scaler fits strictly on <code>X_train</code> during training.</li>
+            <li><strong>Consistent Inference:</strong> Same pipeline transforms production inputs.</li>
+          </ul>
+        </div>
+        <div class="card card-highlight">
+          <h3>3. C: Drive Protection</h3>
+          <ul>
+            <li><strong>Virtualenv on D:</strong> <code>.venv</code> created inside project directory.</li>
+            <li><strong>Pip Cache Redirection:</strong> <code>pip config set global.cache-dir D:\pip-cache</code>.</li>
+            <li><strong>Ultra-Lightweight:</strong> Footprint &lt; 400 MB (vs &gt; 3.5 GB for Deep Learning frameworks).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide" id="slide-4">
+      <div class="slide-badge">03 &bull; Dataset & Agronomy</div>
+      <h2 class="slide-title">8 Physicochemical Parameters & Reference Standards</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>🧪 8 Input Parameters</h3>
+          <ul>
+            <li><strong>Nitrogen (N):</strong> Vegetative vegetative growth ($140 - 280\text{ mg/kg}$ optimal).</li>
+            <li><strong>Phosphorus (P):</strong> Root growth and ATP energy ($15 - 30\text{ mg/kg}$ optimal).</li>
+            <li><strong>Potassium (K):</strong> Drought and stomatal resistance ($130 - 280\text{ mg/kg}$).</li>
+            <li><strong>Soil pH:</strong> Chemical acidity/alkalinity ($6.2 - 7.5$ ideal neutral).</li>
+            <li><strong>Electrical Cond. (EC):</strong> Salinity threshold ($&lt; 1.0\text{ dS/m}$ non-saline).</li>
+            <li><strong>Moisture & Microclimate:</strong> Moisture ($25 - 60\%$), Temp & Humidity.</li>
+          </ul>
+        </div>
+        <div class="card card-highlight">
+          <h3>🌾 ICAR / FAO Classification</h3>
+          <ul>
+            <li><strong>High Fertility (🟢):</strong> Optimal NPK balance, neutral pH, low salinity, good moisture retention.</li>
+            <li><strong>Medium Fertility (🟡):</strong> Moderate nutrient deficit or slight pH imbalance; correctable with starter amendments.</li>
+            <li><strong>Low Fertility (🔴):</strong> Severe nutrient depletion, extreme pH ($&lt; 5.5$ or $&gt; 8.5$), or severe osmotic salinity ($EC &gt; 2.5$).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide" id="slide-5">
+      <div class="slide-badge">04 &bull; Machine Learning</div>
+      <h2 class="slide-title">Model Comparison & Experimental Benchmarks</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>📊 5-Fold Stratified Cross-Validation</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>CV Accuracy</th>
+                <th>CV Macro F1</th>
+                <th>Test F1</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Decision Tree</strong></td>
+                <td>97.23%</td>
+                <td>0.9723</td>
+                <td>0.9696</td>
+              </tr>
+              <tr>
+                <td><strong>Random Forest</strong></td>
+                <td>99.79%</td>
+                <td>0.9979</td>
+                <td>0.9944</td>
+              </tr>
+              <tr style="background: rgba(16, 185, 129, 0.15); color: #34d399;">
+                <td><strong>KNN (Champion)</strong></td>
+                <td>99.72%</td>
+                <td>0.9972</td>
+                <td><strong>1.0000</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card card-highlight">
+          <h3>🏆 Evaluation Highlights</h3>
+          <ul>
+            <li><strong>Metric Choice:</strong> Focused on Macro-averaged F1-Score rather than accuracy to prevent class imbalance skew.</li>
+            <li><strong>Zero High/Low Confusion:</strong> Evaluated on 360 untouched test samples with clean boundary separation.</li>
+            <li><strong>Top Decisive Features:</strong> Nitrogen concentration, Phosphorus availability, and Electrical Conductivity (EC).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide" id="slide-6">
+      <div class="slide-badge">05 &bull; Security & Hardening</div>
+      <h2 class="slide-title">Cybersecurity & Defense-in-Depth</h2>
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <h3>🛡️ Deserialization Defense (CWE-502)</h3>
+          <ul>
+            <li><strong>Attack Vector:</strong> Python <code>pickle</code> / <code>joblib</code> formats execute arbitrary bytecode upon deserialization.</li>
+            <li><strong>Cryptographic Verification:</strong> Computed SHA-256 digest at training time saved in <code>models/model_checksum.json</code>.</li>
+            <li><strong>Runtime Checksum Guard:</strong> <code>SoilPredictor</code> validates hash before unpickling; blocks modified or tampered files.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🔒 Schema Boundary Enforcement</h3>
+          <ul>
+            <li><strong>Pydantic v2 Schema:</strong> Enforces physical constraints ($0 \le \text{pH} \le 14$, non-negative nutrients, bounded moisture).</li>
+            <li><strong>Injection Shield:</strong> Strictly rejects string injections, NaNs, and infinite float values.</li>
+            <li><strong>Automated Test Suite:</strong> 8 unit tests in <code>pytest</code> validating schema boundaries and cryptographic defenses.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide" id="slide-7">
+      <div class="slide-badge">06 &bull; Frontend UI/UX</div>
+      <h2 class="slide-title">Agritech Bento-Grid Interface</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>✨ Modern Design System</h3>
+          <ul>
+            <li><strong>Non-Generic Visuals:</strong> High-contrast dark theme with status-coded glowing fertility badges (🟢 High, 🟡 Medium, 🔴 Low).</li>
+            <li><strong>Edge-to-Edge Layout:</strong> Expanded 98% full-width view eliminating narrow margins on desktop screens.</li>
+            <li><strong>Mobile-Optimized Grid:</strong> Responsive CSS Grid adapting from 8 cards on desktop to 2 tidy columns on mobile.</li>
+          </ul>
+        </div>
+        <div class="card card-highlight">
+          <h3>🌾 Interactive Platform Capabilities</h3>
+          <ul>
+            <li><strong>Regional Archetype Presets:</strong> 1-click loading for <em>Alluvial Loam</em>, <em>Black Cotton</em>, <em>Acidic Sand</em>, and <em>Saline Sodic</em>.</li>
+            <li><strong>Parameter Health Matrix:</strong> Live visual comparison of user inputs against ICAR optimal bands.</li>
+            <li><strong>Batch CSV Screening:</strong> Upload multi-sample farm surveys with instant diagnostic summary and CSV export.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide" id="slide-8">
+      <div class="slide-badge">07 &bull; Conclusion & Roadmap</div>
+      <h2 class="slide-title">Conclusion & Future Research Scope</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>📌 Key Project Deliverables</h3>
+          <ul>
+            <li><strong>Production-Grade ML Classifier:</strong> Zero data leakage, 100% test F1-score on benchmark data.</li>
+            <li><strong>Security-Hardened:</strong> SHA-256 cryptographic model verification and Pydantic validation.</li>
+            <li><strong>Live Deployment:</strong> Publicly accessible on Streamlit Community Cloud (<code>omvs077/soil-sense</code>).</li>
+            <li><strong>Academic Documentation:</strong> Complete architecture, agronomic standards, and viva FAQ in <code>docs/</code>.</li>
+          </ul>
+        </div>
+        <div class="card card-highlight">
+          <h3>🚀 Future Research Directions</h3>
+          <ul>
+            <li><strong>Wireless IoT Ingestion:</strong> Direct telemetry from ESP32 / LoRaWAN NPK field probes.</li>
+            <li><strong>Satellite GIS Mapping:</strong> Fusing Sentinel-2 multispectral reflectance and NDVI crop vigor data.</li>
+            <li><strong>Crop-Specific Recommendations:</strong> Tailoring nutrient curves to specific crops (e.g. Wheat, Rice, Cotton).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Slide Navigation Controls -->
+  <div class="controls">
+    <button class="btn" id="prevBtn" onclick="prevSlide()">← Previous</button>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <span class="slide-counter" id="counter">Slide 1 / 8</span>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">Next →</button>
+    <button class="btn" onclick="window.print()" style="margin-left: 1rem;">🖨️ Export PDF</button>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 8;
+
+    function showSlide(n) {
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      const active = document.getElementById(`slide-${n}`);
+      if (active) active.classList.add('active');
+
+      document.getElementById('counter').innerText = `Slide ${n} / ${totalSlides}`;
+      document.getElementById('progressFill').style.width = `${(n / totalSlides) * 100}%`;
+
+      document.getElementById('prevBtn').disabled = (n === 1);
+      document.getElementById('nextBtn').disabled = (n === totalSlides);
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      }
+    });
+
+    showSlide(currentSlide);
+  </script>
+</body>
+</html>
